@@ -9,7 +9,7 @@ Sets up lograge for denser logs.
 Set up basic auth if the `BASIC_AUTH` env variable is set. It is expected to be formatted like `user:password`.
 
 ### denkungsart-production.i18n_rollbar
-Reports missing translations as warnings to Rollbar.
+Reports missing translations as errors to Rollbar.
 
 ### denkungsart-production.unpermitted_parameters_rollbar
 Reports unpermitted parameters as errors to Rollbar.
@@ -27,7 +27,10 @@ gem 'denkungsart-production', group: :production
 ```
 
 ## Changelog
-### 0.1.0 (2019-06-13)
+### 2019-08-20
+* Report missing translations as errors instead of warning.
+
+### 2019-06-13
 * Initial extraction
 
 ## License

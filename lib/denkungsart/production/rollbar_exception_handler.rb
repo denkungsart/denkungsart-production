@@ -1,7 +1,7 @@
 class RollbarExceptionHandler < I18n::ExceptionHandler
   def call(exception, locale, key, options)
     if exception.is_a?(I18n::MissingTranslation)
-      Rollbar.warning(exception, locale: locale, key: key, options: options)
+      Rollbar.error(exception, locale: locale, key: key, options: options)
     end
     super
   end
