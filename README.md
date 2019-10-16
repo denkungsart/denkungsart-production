@@ -27,6 +27,9 @@ gem 'denkungsart-production', group: :production
 ```
 
 ## Changelog
+### 2019-10-16
+* Report missing translations when using ActionView::TranslationHelper shortcuts
+
 ### 2019-08-20
 * Report missing translations as errors instead of warning.
 

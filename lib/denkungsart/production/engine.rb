@@ -2,6 +2,7 @@ require "rails/engine"
 require "lograge"
 require "rollbar"
 require "denkungsart/production/rollbar_exception_handler"
+require "denkungsart/production/report_missing_translation_in_translation_helper"
 
 module Denkungsart
   module Production
@@ -34,6 +35,9 @@ module Denkungsart
       # Log missing translations to Rollbar
       initializer "denkungsart-production.i18n_rollbar" do
         I18n.exception_handler = RollbarExceptionHandler.new
+        ActiveSupport.on_load(:action_view) do
+          prepend ReportMissingTranslationInTranslationHelper
+        end
       end
 
       # Log unpermitted parameters to Rollbar
