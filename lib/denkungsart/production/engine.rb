@@ -56,6 +56,10 @@ module Denkungsart
           Rollbar.error("Deprecation Warning", payload)
         end
       end
+
+      initializer "denkungsart-production.disable_rack_timeout_logging" do
+        Rack::Timeout::Logger.disable if defined?(Rack::Timeout::Logger)
+      end
     end
   end
 end

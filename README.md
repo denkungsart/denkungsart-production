@@ -17,6 +17,8 @@ Reports unpermitted parameters as errors to Rollbar.
 ### denkungsart-production.deprecation_rollbar
 Reports rails deprecation warnings as errors to Rollbar.
 
+### denkungsart-production.disable_rack_timeout_logging
+Disables `rack-timeout`-logging. It's very verbose, and we don't use it.
 
 ## Installation
 
@@ -27,6 +29,9 @@ gem 'denkungsart-production', group: :production
 ```
 
 ## Changelog
+### 2020-09-22
+* Disable `rack-timeout`-logging
+
 ### 2019-10-16
 * Report missing translations when using ActionView::TranslationHelper shortcuts
 
