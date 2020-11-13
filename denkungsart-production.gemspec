@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "lograge", "~> 0.10.0"
   spec.add_dependency "rollbar", "~> 2.0"
+  spec.add_dependency "voight_kampff"
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake"

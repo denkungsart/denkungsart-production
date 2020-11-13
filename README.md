@@ -3,7 +3,7 @@
 This is a row of initializers we use in all our apps in production.
 
 ### denkungsart-production.setup-lograge
-Sets up lograge for denser logs.
+Enable lograge for denser logs (so papertrail doesn't go over quota)
 
 ### denkungsart-production.basic_auth
 Set up basic auth if the `BASIC_AUTH` env variable is set. It is expected to be formatted like `user:password`.
@@ -20,6 +20,9 @@ Reports rails deprecation warnings as errors to Rollbar.
 ### denkungsart-production.disable_rack_timeout_logging
 Disables `rack-timeout`-logging. It's very verbose, and we don't use it.
 
+### denkungsart-production.rollbar_ignore_bots
+Don't report errors caused by bots to Rollbar.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -29,6 +32,9 @@ gem 'denkungsart-production', group: :production
 ```
 
 ## Changelog
+### 2020-11-13
+* Don't report errors caused by bots to Rollbar
+
 ### 2020-09-22
 * Disable `rack-timeout`-logging
 
