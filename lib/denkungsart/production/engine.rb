@@ -11,9 +11,11 @@ module Denkungsart
       initializer "denkungsart-production.setup-lograge" do |app|
         app.config.lograge.enabled = true
         app.config.lograge.custom_options = lambda do |event|
-          {
+          info = {
             params: event.payload[:params].except("controller", "action", "format")
           }
+          info.merge!(event.payload[:custom]) if event.payload[:custom]
+          info
         end
         app.config.lograge.custom_payload do |controller|
           {
