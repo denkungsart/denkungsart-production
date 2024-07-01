@@ -59,12 +59,14 @@ module Denkungsart
       end
 
       initializer "denkungsart-production.rollbar_ignore_bots" do
-        ignore_bots = proc do |options|
-          scope = options[:scope]
-          user_agent = scope[:request]&.dig(:headers, "User-Agent")
-          raise Rollbar::Ignore if VoightKampff.bot?(user_agent)
+        if defined?(Rollbar)
+          ignore_bots = proc do |options|
+            scope = options[:scope]
+            user_agent = scope[:request]&.dig(:headers, "User-Agent")
+            raise Rollbar::Ignore if VoightKampff.bot?(user_agent)
+          end
+          Rollbar.configuration.before_process << ignore_bots
         end
-        Rollbar.configuration.before_process << ignore_bots
       end
     end
   end

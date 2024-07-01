@@ -34,6 +34,7 @@ gem 'denkungsart-production', group: :production
 ## Changelog
 ### 2024-07-01
 * Generalize error reporting to not be dependent on Rollbar, but continue to default to Rollbar.
+* Add support for Sentry.
 
 ### 2020-11-13
 * Don't report errors caused by bots to Rollbar
