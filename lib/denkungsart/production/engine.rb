@@ -1,8 +1,7 @@
 require "rails/engine"
 require "lograge"
-require "rollbar"
 require "voight_kampff"
-require "denkungsart/production/rollbar_exception_handler"
+require "denkungsart/production/report_exception_handler"
 require "denkungsart/production/report_missing_translation_in_translation_helper"
 
 module Denkungsart
@@ -33,25 +32,25 @@ module Denkungsart
         end
       end
 
-      initializer "denkungsart-production.i18n_rollbar" do
-        I18n.exception_handler = RollbarExceptionHandler.new
+      initializer "denkungsart-production.i18n_report" do
+        I18n.exception_handler = ReportExceptionHandler.new
         ActiveSupport.on_load(:action_view) do
           prepend ReportMissingTranslationInTranslationHelper
         end
       end
 
-      initializer "denkungsart-production.unpermitted_parameters_rollbar", before: "action_controller.parameters_config" do |app|
+      initializer "denkungsart-production.unpermitted_parameters_report", before: "action_controller.parameters_config" do |app|
         app.config.action_controller.action_on_unpermitted_parameters = :log
         ActiveSupport::Notifications.subscribe "unpermitted_parameters.action_controller" do |_name, _start, _finish, _id, payload|
-          Rollbar.error("Unpermitted Parameters", payload)
+          Denkungsart::Production.report_exception(:error, "Unpermitted Parameters", payload)
         end
       end
 
-      initializer "denkungsart-production.deprecation_rollbar", before: "active_support.deprecation_behavior" do |app|
+      initializer "denkungsart-production.deprecation_report", before: "active_support.deprecation_behavior" do |app|
         app.config.active_support.deprecation = :notify
 
         ActiveSupport::Notifications.subscribe "deprecation.rails" do |_name, _start, _finish, _id, payload|
-          Rollbar.error("Deprecation Warning", payload)
+          Denkungsart::Production.report_exception(:error, "Deprecation Warning", payload)
         end
       end
 

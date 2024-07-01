@@ -8,14 +8,14 @@ Enable lograge for denser logs (so papertrail doesn't go over quota)
 ### denkungsart-production.basic_auth
 Set up basic auth if the `BASIC_AUTH` env variable is set. It is expected to be formatted like `user:password`.
 
-### denkungsart-production.i18n_rollbar
-Reports missing translations as errors to Rollbar.
+### denkungsart-production.i18n_report
+Reports missing translations as errors to error reporting.
 
-### denkungsart-production.unpermitted_parameters_rollbar
-Reports unpermitted parameters as errors to Rollbar.
+### denkungsart-production.unpermitted_parameters_report
+Reports unpermitted parameters as errors to error reporting.
 
-### denkungsart-production.deprecation_rollbar
-Reports rails deprecation warnings as errors to Rollbar.
+### denkungsart-production.deprecation_report
+Reports rails deprecation warnings as errors to error reporting.
 
 ### denkungsart-production.disable_rack_timeout_logging
 Disables `rack-timeout`-logging. It's very verbose, and we don't use it.
@@ -32,6 +32,9 @@ gem 'denkungsart-production', group: :production
 ```
 
 ## Changelog
+### 2024-07-01
+* Generalize error reporting to not be dependent on Rollbar, but continue to default to Rollbar.
+
 ### 2020-11-13
 * Don't report errors caused by bots to Rollbar
 
