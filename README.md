@@ -33,9 +33,6 @@ Reports rails deprecation warnings as errors to error reporting.
 ### denkungsart-production.disable_rack_timeout_logging
 Disables `rack-timeout`-logging. It's very verbose, and we don't use it.
 
-### denkungsart-production.rollbar_ignore_bots
-Don't report errors caused by bots to Rollbar.
-
 ## Installation
 
 Add this line to your application's Gemfile:

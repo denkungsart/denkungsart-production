@@ -1,6 +1,5 @@
 require "rails/engine"
 require "lograge"
-require "voight_kampff"
 require "denkungsart/production/basic_auth"
 require "denkungsart/production/report_exception_handler"
 require "denkungsart/production/report_missing_translation_in_translation_helper"
@@ -54,17 +53,6 @@ module Denkungsart
 
       initializer "denkungsart-production.disable_rack_timeout_logging" do
         Rack::Timeout::Logger.disable if defined?(Rack::Timeout::Logger)
-      end
-
-      initializer "denkungsart-production.rollbar_ignore_bots" do
-        if defined?(Rollbar)
-          ignore_bots = proc do |options|
-            scope = options[:scope]
-            user_agent = scope[:request]&.dig(:headers, "User-Agent")
-            raise Rollbar::Ignore if VoightKampff.bot?(user_agent)
-          end
-          Rollbar.configuration.before_process << ignore_bots
-        end
       end
     end
   end
