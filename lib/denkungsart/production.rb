@@ -3,8 +3,11 @@ require "denkungsart/production/version"
 
 module Denkungsart
   module Production
-    mattr_accessor :error_reporting
-    self.error_reporting = :rollbar
+    mattr_accessor :report_exception
+    self.report_exception = lambda do |level, error, extra = {}|
+      error = RuntimeError.new(error) unless error.is_a?(Exception)
+      Rails.error.report(error, severity: level, context: extra)
+    end
 
     mattr_accessor :basic_auth_user
     self.basic_auth_user = nil
@@ -17,19 +20,6 @@ module Denkungsart
 
     def self.basic_auth_credentials=(credentials)
       self.basic_auth_user, self.basic_auth_password = credentials
-    end
-
-    def self.report_exception(level, error, extra = {})
-      case error_reporting
-      when :rollbar
-        Rollbar.public_send(level, error, extra)
-      when :sentry
-        capture_method = error.is_a?(Exception) ? :capture_exception : :capture_message
-
-        Sentry.public_send(capture_method, error, extra: extra, level: level)
-      else
-        raise "Don't know how to handle '#{error_reporting}'"
-      end
     end
   end
 end

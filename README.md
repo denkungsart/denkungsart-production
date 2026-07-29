@@ -30,6 +30,14 @@ Reports unpermitted parameters as errors to error reporting.
 ### denkungsart-production.deprecation_report
 Reports rails deprecation warnings as errors to error reporting.
 
+Errors are reported through `Rails.error` by default. Applications can override the reporter:
+
+```ruby
+Denkungsart::Production.report_exception = lambda do |level, error, context|
+  MyErrorReporter.report(error, level: level, context: context)
+end
+```
+
 ### denkungsart-production.disable_rack_timeout_logging
 Disables `rack-timeout`-logging. It's very verbose, and we don't use it.
 

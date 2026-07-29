@@ -5,6 +5,6 @@ class ReportExceptionHandler < I18n::ExceptionHandler
   end
 
   def report_exception(exception, locale, key, options)
-    Denkungsart::Production.report_exception(:error, exception, { locale: locale, key: key, options: options })
+    Denkungsart::Production.report_exception.call(:error, exception, { locale: locale, key: key, options: options })
   end
 end

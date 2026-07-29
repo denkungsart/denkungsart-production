@@ -39,7 +39,7 @@ module Denkungsart
       initializer "denkungsart-production.unpermitted_parameters_report", before: "action_controller.parameters_config" do |app|
         app.config.action_controller.action_on_unpermitted_parameters = :log
         ActiveSupport::Notifications.subscribe "unpermitted_parameters.action_controller" do |_name, _start, _finish, _id, payload|
-          Denkungsart::Production.report_exception(:error, "Unpermitted Parameters", payload)
+          Denkungsart::Production.report_exception.call(:error, "Unpermitted Parameters", payload)
         end
       end
 
@@ -47,7 +47,7 @@ module Denkungsart
         app.config.active_support.deprecation = :notify
 
         ActiveSupport::Notifications.subscribe "deprecation.rails" do |_name, _start, _finish, _id, payload|
-          Denkungsart::Production.report_exception(:error, "Deprecation Warning", payload)
+          Denkungsart::Production.report_exception.call(:error, "Deprecation Warning", payload)
         end
       end
 
