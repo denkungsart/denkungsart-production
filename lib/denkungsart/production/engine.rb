@@ -1,6 +1,7 @@
 require "rails/engine"
 require "lograge"
 require "voight_kampff"
+require "denkungsart/production/basic_auth"
 require "denkungsart/production/report_exception_handler"
 require "denkungsart/production/report_missing_translation_in_translation_helper"
 
@@ -23,12 +24,11 @@ module Denkungsart
         end
       end
 
-      initializer "denkungsart-production.basic_auth" do |app|
-        if ENV["BASIC_AUTH"]
-          expected_user, expected_password = ENV["BASIC_AUTH"].split(":")
-          app.config.middleware.use(::Rack::Auth::Basic) do |user, password|
-            user == expected_user && password == expected_password
-          end
+      # Run after the host application's config/initializers have loaded so it can
+      # configure the credentials before we decide whether to add the middleware.
+      initializer "denkungsart-production.basic_auth", after: :load_config_initializers do |app|
+        if Denkungsart::Production.basic_auth_user && Denkungsart::Production.basic_auth_password
+          app.config.middleware.use(Denkungsart::Production::BasicAuth)
         end
       end
 

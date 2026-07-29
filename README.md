@@ -6,7 +6,15 @@ This is a row of initializers we use in all our apps in production.
 Enable lograge for denser logs (so papertrail doesn't go over quota)
 
 ### denkungsart-production.basic_auth
-Set up basic auth if the `BASIC_AUTH` env variable is set. It is expected to be formatted like `user:password`.
+Set up basic auth by configuring a user and password in an initializer. The middleware is only
+added when both values are configured. Host applications can source the values from their environment:
+
+```ruby
+Denkungsart::Production.basic_auth_credentials = ENV["BASIC_AUTH"].split(":")
+Denkungsart::Production.basic_auth_excluded_paths = ["/up", "/webhooks/example"]
+```
+
+The optional excluded paths are exact request paths which do not require authentication.
 
 ### denkungsart-production.i18n_report
 Reports missing translations as errors to error reporting.
