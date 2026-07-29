@@ -6,10 +6,15 @@ This is a row of initializers we use in all our apps in production.
 Enable lograge for denser logs (so papertrail doesn't go over quota)
 
 ### denkungsart-production.basic_auth
-Set up basic auth by configuring a user and password in an initializer. The middleware is only
-added when both values are configured. Host applications can source the values from their environment:
+Set up basic auth in the host application's `config/environments/production.rb`. As a general rule,
+configuration used by gem initializers should be set in the environment config rather than in
+`config/initializers`, so it is available before the gem initializers run.
+
+The middleware is only added when both a user and password are configured. Host applications can
+source the values from their environment:
 
 ```ruby
+# config/environments/production.rb
 Denkungsart::Production.basic_auth_credentials = ENV["BASIC_AUTH"].split(":")
 Denkungsart::Production.basic_auth_excluded_paths = ["/up", "/webhooks/example"]
 ```

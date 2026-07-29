@@ -24,9 +24,7 @@ module Denkungsart
         end
       end
 
-      # Run after the host application's config/initializers have loaded so it can
-      # configure the credentials before we decide whether to add the middleware.
-      initializer "denkungsart-production.basic_auth", after: :load_config_initializers do |app|
+      initializer "denkungsart-production.basic_auth" do |app|
         if Denkungsart::Production.basic_auth_user && Denkungsart::Production.basic_auth_password
           app.config.middleware.use(Denkungsart::Production::BasicAuth)
         end
