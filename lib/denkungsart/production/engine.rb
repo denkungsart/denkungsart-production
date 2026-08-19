@@ -2,7 +2,6 @@ require "rails/engine"
 require "lograge"
 require "denkungsart/production/basic_auth"
 require "denkungsart/production/report_exception_handler"
-require "denkungsart/production/report_missing_translation_in_translation_helper"
 
 module Denkungsart
   module Production
@@ -31,9 +30,6 @@ module Denkungsart
 
       initializer "denkungsart-production.i18n_report" do
         I18n.exception_handler = ReportExceptionHandler.new
-        ActiveSupport.on_load(:action_view) do
-          prepend ReportMissingTranslationInTranslationHelper
-        end
       end
 
       initializer "denkungsart-production.unpermitted_parameters_report", before: "action_controller.parameters_config" do |app|
