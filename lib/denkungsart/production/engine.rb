@@ -42,7 +42,7 @@ module Denkungsart
       initializer "denkungsart-production.deprecation_report", before: "active_support.deprecation_behavior" do |app|
         app.config.active_support.deprecation = :notify
 
-        ActiveSupport::Notifications.subscribe "deprecation.rails" do |_name, _start, _finish, _id, payload|
+        ActiveSupport::Notifications.subscribe(/\Adeprecation\./) do |_name, _start, _finish, _id, payload|
           Denkungsart::Production.report_exception.call(:error, "Deprecation Warning", payload)
         end
       end
