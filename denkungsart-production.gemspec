@@ -25,5 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "lograge", "~> 0.10.0"
 
   spec.add_development_dependency "bundler", "~> 2.0"
+  spec.add_development_dependency "minitest"
   spec.add_development_dependency "rake"
 end
