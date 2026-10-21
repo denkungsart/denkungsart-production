@@ -3,7 +3,8 @@
 This is a row of initializers we use in all our apps in production.
 
 ### denkungsart-production.setup-lograge
-Enable lograge for denser logs (so papertrail doesn't go over quota)
+Enable lograge for denser logs (so papertrail doesn't go over quota). Each line includes the signed-in
+user's id (`uid`), read from the Warden session for the `:user` scope without loading the user.
 
 ### denkungsart-production.basic_auth
 Set up basic auth in the host application's `config/environments/production.rb`. As a general rule,
@@ -50,6 +51,9 @@ gem 'denkungsart-production', group: :production
 ```
 
 ## Changelog
+### 2026-10-21
+* Read the logged `uid` from the Warden session instead of calling `current_user`.
+
 ### 2024-07-01
 * Generalize error reporting to not be dependent on Rollbar, but continue to default to Rollbar.
 * Add support for Sentry.

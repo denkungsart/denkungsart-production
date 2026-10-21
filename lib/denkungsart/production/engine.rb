@@ -15,9 +15,13 @@ module Denkungsart
           info.merge!(event.payload[:custom]) if event.payload[:custom]
           info
         end
+        # Read the signed-in user's id from the Warden session rather than
+        # calling `current_user`: this runs after the action, also when it
+        # raised, and loading the user again could hang on a database that
+        # just failed.
         app.config.lograge.custom_payload do |controller|
           {
-            uid: controller.current_user.try(:id) || :guest
+            uid: controller.request.session["warden.user.user.key"]&.dig(0, 0) || :guest
           }
         end
       end
