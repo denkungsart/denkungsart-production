@@ -3,6 +3,8 @@ require "denkungsart/production/version"
 
 module Denkungsart
   module Production
+    class DeprecationWarning < StandardError; end
+
     mattr_accessor :report_exception
     self.report_exception = lambda do |level, error, extra = {}|
       error = RuntimeError.new(error) unless error.is_a?(Exception)

@@ -43,7 +43,11 @@ module Denkungsart
         app.config.active_support.deprecation = :notify
 
         ActiveSupport::Notifications.subscribe(/\Adeprecation\./) do |_name, _start, _finish, _id, payload|
-          Denkungsart::Production.report_exception.call(:error, "Deprecation Warning", payload)
+          # Leave out the "(called from ...)" suffix, which the backtrace shows,
+          # so that the message names the deprecation regardless of its caller.
+          error = DeprecationWarning.new(payload[:message].sub(/ \(called from .+\)\z/, ""))
+          error.set_backtrace(payload[:callstack].map(&:to_s))
+          Denkungsart::Production.report_exception.call(:error, error, payload.except(:message, :callstack))
         end
       end
 
